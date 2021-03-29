@@ -1,0 +1,26 @@
+﻿<Module>
+	<Name value="Androgath's Fire Arrow"/>
+	<Id value="AndrogathsFireArrow"/>
+	<Version value="v1.1.1"/>
+	<SingleplayerModule value="true"/>
+	<MultiplayerModule value="false"/>
+	<DependedModules>
+		<DependedModule Id="Bannerlord.MBOptionScreen"/>
+		<DependedModule Id="Native"/>
+		<DependedModule Id="SandBoxCore"/>
+		<DependedModule Id="Sandbox"/>
+		<DependedModule Id="StoryMode"/>
+	</DependedModules>
+	<SubModules>
+		<SubModule>
+			<Name value="FireArrow"/>
+			<DLLName value="FireArrow.dll"/>
+			<SubModuleClassType value="FireArrow.SubModule"/>
+			<Tags>
+				<Tag key="DedicatedServerType" value="none" />
+				<Tag key="IsNoRenderModeElement" value="false" />
+			</Tags>
+		</SubModule>
+	</SubModules>
+	<Xmls/>
+</Module>

@@ -5,6 +5,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace FireArrow
@@ -12,7 +13,7 @@ namespace FireArrow
     class FireArrow : MissionLogic
     {
         public static readonly Settings _settings = GlobalSettings<Settings>.Instance;
-        private bool isEnabled = false;
+        private bool isEnabled = _settings.EnabledByDefault;
         private List<WeaponClass> burnableWeapons = new List<WeaponClass>() {WeaponClass.Arrow, WeaponClass.Bolt};
 
         private Dictionary<Mission.Missile, MissionTimer> burningMissiles = new Dictionary<Mission.Missile, MissionTimer>();
@@ -75,7 +76,8 @@ namespace FireArrow
             if (Input.IsKeyPressed(_settings.ToggleKey.SelectedValue))
             {
                 isEnabled = !isEnabled;
-                InformationManager.DisplayMessage(new InformationMessage("Fire Arrow " + (isEnabled ? "Enabled" : "Disabled")));
+                TextObject message = new TextObject(isEnabled ? "{=firearrow_enabled}Fire Arrow Enabled" : "{=firearrow_disabled}Fire Arrow Disabled");
+                InformationManager.DisplayMessage(new InformationMessage(message.ToString()));
             }
 
             // Check burningMissiles for if it's time to stop burning & remove all corresponding keys from burningMissiles.
@@ -160,15 +162,21 @@ namespace FireArrow
             victim.RegisterBlow(CreateBurningBlow(attacker, victim));
             if (attacker == Agent.Main && !victim.IsFriendOf(attacker))
             {
-                InformationManager.DisplayMessage(new InformationMessage("Delivered "+_settings.AgentBurningDamage+" Burning damage"));
+                TextObject message = new TextObject("{=deliver_burning_damage}Delivered {DAMAGE} Burning damage");
+                message.SetTextVariable("DAMAGE", _settings.AgentBurningDamage);
+                InformationManager.DisplayMessage(new InformationMessage(message.ToString()));
             }
             else if (attacker == Agent.Main && victim.IsFriendOf(attacker))
             {
-                InformationManager.DisplayMessage(new InformationMessage("Delivered " + _settings.AgentBurningDamage + " Burning damage to ally!", Color.ConvertStringToColor("#D65252FF")));
+                TextObject message = new TextObject("{=deliver_burning_damage_ally}Delivered {DAMAGE} Burning damage to ally!");
+                message.SetTextVariable("DAMAGE", _settings.AgentBurningDamage);
+                InformationManager.DisplayMessage(new InformationMessage(message.ToString(), Color.ConvertStringToColor("#D65252FF")));
             }
             else if (victim == Agent.Main)
             {
-                InformationManager.DisplayMessage(new InformationMessage("Received " + _settings.AgentBurningDamage + " Burning damage", Color.ConvertStringToColor("#D65252FF")));
+                TextObject message = new TextObject("{=receive_burning_damage}Received {DAMAGE} Burning damage");
+                message.SetTextVariable("DAMAGE", _settings.AgentBurningDamage);
+                InformationManager.DisplayMessage(new InformationMessage(message.ToString(), Color.ConvertStringToColor("#D65252FF")));
             }
         }
         private Blow CreateBurningBlow(Agent attacker, Agent victim)

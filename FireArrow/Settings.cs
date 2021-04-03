@@ -20,11 +20,13 @@ namespace FireArrow
         public override string Id => "AndrogathsFireArrow";
         public override string FolderName => "AndrogathsFireArrow";
 
-        public override string DisplayName => "Androgath's Fire Arrow 1.1.0";
+        public override string DisplayName => "Androgath's Fire Arrow 1.1.2";
         [SettingPropertyDropdown("{=FireArrow_key_setting}Toggle Key", HintText = "{=FireArrow_key_info}Set toggle key to enable/disable fire arrow during battle.", Order = 1, RequireRestart = false)]
         [SettingPropertyGroup("{=Fire_Arrow_Header}General Mod Settings")]
         public DropdownDefault<InputKey> ToggleKey { get; set; } = new DropdownDefault<InputKey>(Enum.GetValues(typeof(InputKey)).Cast<InputKey>(), 46);
-        
+        [SettingPropertyBool("{=FireArrow_enabledbydefault_setting}Fire Arrows Enabled By Default", HintText = "{=FireArrow_enabledbydefault_info}Battles will begin with fire arrows enabled.", Order = 2, RequireRestart = false)]
+        [SettingPropertyGroup("{=Fire_Arrow_Header}General Mod Settings")]
+        public bool EnabledByDefault { get; set; }
         [SettingPropertyBool("{=FireArrow_night_setting}Allow Fire Arrow Only At Night", HintText = "{=FireArrow_night_info}Enable fire arrows only at night.", Order = 2, RequireRestart = false)]
         [SettingPropertyGroup("{=Fire_Arrow_Header}General Mod Settings")]
         public bool NightOnly { get; set; }
@@ -97,6 +99,7 @@ namespace FireArrow
             IDictionary<string, Func<BaseSettings>> basePresets = new Dictionary<string, Func<BaseSettings>>();
             basePresets.Add("Default", () => new Settings()
             {
+                EnabledByDefault = false,
                 NightOnly = true,
                 SiegeOnly = false,
                 SpecificAmmoActive = false,
